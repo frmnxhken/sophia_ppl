@@ -1,0 +1,70 @@
+/* Mint to Teal Pastel */
+.bg-soft-green {
+    background-color: #C8EEDC;
+}
+
+/* Red Pastel */
+.bg-soft-red {
+    background-color: #FDE2E4;
+}
+
+/* Blue Pastel */
+.bg-soft-blue {
+    background-color: #E3F2FD;
+}
+
+/* Orange Pastel */
+.bg-soft-orange {
+    background-color: #FFE8D6;
+}
+
+/* Purple Pastel */
+.bg-soft-purple {
+    background-color: #EAE4FF;
+}
+
+.navbar-toggler {
+    border: none !important;
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:active,
+.navbar-toggler:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.fs-vs {
+    font-size: 14px;
+}
+
+.mw-md {
+    max-width: 960px;
+    margin: auto;
+}
+
+.card-class {
+    min-height: 300px;
+    max-height: 300px;
+}
+
+@media (max-width: 767.98px) {
+    .card-class {
+        min-height: 250px;
+        max-height: 300px;
+    }
+
+    .list-group {
+        border-radius: 0 !important;
+    }
+
+    .list-group.flex-row .list-group-item {
+        border: 1px solid #dee2e6 !important;
+        border-right: none !important;
+    }
+
+    .list-group.flex-row .list-group-item:last-child {
+        border-right: 1px solid #dee2e6 !important;
+    }
+
+}
