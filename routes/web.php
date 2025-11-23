@@ -1,13 +1,13 @@
 <?php
 
-use App\Http\Controllers\AssignmentController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ClassroomController;
-use App\Http\Controllers\MemberClassController;
-use App\Http\Controllers\PostController;
-use App\Http\Controllers\SubmissionController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\ClassroomController;
+use App\Http\Controllers\AssignmentController;
+use App\Http\Controllers\SubmissionController;
+use App\Http\Controllers\MemberClassController;
 
 Route::middleware("auth")->group(function () {
     // Classroom Route
@@ -16,58 +16,58 @@ Route::middleware("auth")->group(function () {
     Route::post("/create", [ClassroomController::class, "store"])->name("storeClass");
     Route::post("/join", [ClassroomController::class, "joinClass"])->name("joinClass");
 
-    // Classroom Ensure
-    Route::middleware("joined")->group(function () {
-        Route::get("/class/{id}", [ClassroomController::class, "show"])->name("detailClass");
-        Route::delete("/class/{id}/out", [ClassroomController::class, "out"])->name("outClass");
+    Route::middleware("joined")->prefix("class/{id}")->group(function () {
+        // Classroom Ensure
+        Route::get("/", [ClassroomController::class, "show"])->name("detailClass");
+        Route::delete("/out", [ClassroomController::class, "out"])->name("outClass");
 
         // Member Management
-        Route::get("/class/{id}/member", [MemberClassController::class, "index"])->name("memberClass");
+        Route::get("/member", [MemberClassController::class, "index"])->name("memberClass");
 
         // Assignment
-        Route::get("/class/{id}/assignment", [AssignmentController::class, "assignmentClass"])->name("assignmentClass");
+        Route::get("/assignment", [AssignmentController::class, "assignmentClass"])->name("assignmentClass");
 
         // Post 
-        Route::get("/class/{id}/post/{id_post}", [PostController::class, "show"])->name("detailPost");
-        Route::get('/class/{id}/post/{id_file}/download', [PostController::class, 'download'])->name('fileDownload');
+        Route::get("/post/{id_post}", [PostController::class, "show"])->name("detailPost");
+        Route::get('/post/{id_file}/download', [PostController::class, 'download'])->name('fileDownload');
 
         // Submission
-        Route::post("/class/{id}/post/{id_post}/submission", [SubmissionController::class, "store"])->name("storeSubmission");
+        Route::post("/post/{id_post}/submission", [SubmissionController::class, "store"])->name("storeSubmission");
     });
 
-    Route::middleware("author")->group(function () {
+    Route::middleware("author")->prefix("class/{id}")->group(function () {
         // Classroom Setting
-        Route::get("/class/{id}/setting", [ClassroomController::class, "setting"])->name("setting");
-        Route::put("/class/{id}/setting", [ClassroomController::class, "updateSetting"])->name("updateSetting");
+        Route::get("/setting", [ClassroomController::class, "setting"])->name("setting");
+        Route::put("/setting", [ClassroomController::class, "updateSetting"])->name("updateSetting");
 
         // Material Management
-        Route::get("/class/{id}/material/create", [PostController::class, "createMaterial"])->name("createMaterial");
-        Route::post("/class/{id}/material/create", [PostController::class, "storeMaterial"])->name("storeMaterial");
-        Route::get("/class/{id}/material/{id_post}/edit", [PostController::class, "editMaterial"])->name("editMaterial");
-        Route::put("/class/{id}/material/{id_post}", [PostController::class, "updateMaterial"])->name("updateMaterial");
+        Route::get("/material/create", [PostController::class, "createMaterial"])->name("createMaterial");
+        Route::post("/material/create", [PostController::class, "storeMaterial"])->name("storeMaterial");
+        Route::get("/material/{id_post}/edit", [PostController::class, "editMaterial"])->name("editMaterial");
+        Route::put("/material/{id_post}", [PostController::class, "updateMaterial"])->name("updateMaterial");
 
         // Post 
-        Route::delete('/class/{id}/file/{id_file}', [PostController::class, 'deletePostFile'])->name('deletePostFile');
-        Route::delete('/class/{id}/post/{id_post}', [PostController::class, 'deletePost'])->name('deletePost');
+        Route::delete('/file/{id_file}', [PostController::class, 'deletePostFile'])->name('deletePostFile');
+        Route::delete('/post/{id_post}', [PostController::class, 'deletePost'])->name('deletePost');
 
         // Assignment Management
-        Route::get("/class/{id}/assignment/create", [PostController::class, "createAssignment"])->name("createAssignment");
-        Route::post("/class/{id}/assignment/create", [PostController::class, "storeAssignment"])->name("storeAssignment");
-        Route::get("/class/{id}/assignment/{id_post}/edit", [PostController::class, "editAssignment"])->name("editAssignment");
-        Route::put("/class/{id}/assignment/{id_post}", [PostController::class, "updateAssignment"])->name("updateAssignment");
+        Route::get("/assignment/create", [PostController::class, "createAssignment"])->name("createAssignment");
+        Route::post("/assignment/create", [PostController::class, "storeAssignment"])->name("storeAssignment");
+        Route::get("/assignment/{id_post}/edit", [PostController::class, "editAssignment"])->name("editAssignment");
+        Route::put("/assignment/{id_post}", [PostController::class, "updateAssignment"])->name("updateAssignment");
 
         // Assesment
-        Route::get("/class/{id}/assesment/{id_post}", [SubmissionController::class, "index"])->name("assesments");
-        Route::get("/class/{id}/assesment/{id_submission}/detail", [SubmissionController::class, "show"])->name("submissionDetail");
-        Route::put("/class/{id}/assesment/{id_submission}", [SubmissionController::class, "update"])->name("signAssesment");
-        Route::get('/class/{id}/submission/{id_file}/download', [SubmissionController::class, 'download'])->name('submissionDownload');
+        Route::get("/assesment/{id_post}", [SubmissionController::class, "index"])->name("assesments");
+        Route::get("/assesment/{id_submission}/detail", [SubmissionController::class, "show"])->name("submissionDetail");
+        Route::put("/assesment/{id_submission}", [SubmissionController::class, "update"])->name("signAssesment");
+        Route::get('/submission/{id_file}/download', [SubmissionController::class, 'download'])->name('submissionDownload');
 
         // Information
-        Route::post("/class/{id}/information", [ClassroomController::class, "storeInformation"])->name("createInformation");
-        Route::put("/class/{id}/information/{id_post}", [ClassroomController::class, "updateInformation"])->name("updateInformation");
+        Route::post("/information", [ClassroomController::class, "storeInformation"])->name("createInformation");
+        Route::put("/information/{id_post}", [ClassroomController::class, "updateInformation"])->name("updateInformation");
 
         // Member Management
-        Route::delete("/class/{id}/member/{id_user}", [MemberClassController::class, "destroy"])->name("bannedMember");
+        Route::delete("/member/{id_user}", [MemberClassController::class, "destroy"])->name("bannedMember");
     });
 
     // Profile Route
