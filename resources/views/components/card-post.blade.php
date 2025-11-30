@@ -51,10 +51,10 @@
             </a>
             @endif
 
-            <form action="" method="post">
+            <form action="{{ route('deletePost', ['id' => $classroom->id, 'id_post' => $post->id]) }}" method="post">
                 @csrf
                 @method('DELETE')
-                <button class="border-0 bg-white fs-vs text-muted">
+                <button onclick="return confirm('Yakin untuk dihapus?')" class="border-0 bg-white fs-vs text-muted">
                     Delete
                 </button>
             </form>
