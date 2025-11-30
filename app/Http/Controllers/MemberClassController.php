@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classroom;
 use App\Models\MemberClass;
+use App\Models\Submission;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,6 +22,7 @@ class MemberClassController extends Controller
     public function destroy($id, $id_user)
     {
         MemberClass::where("user_id", $id_user)->delete();
+        Submission::where("user_id", $id_user)->delete();
         return redirect()->back();
     }
 }
